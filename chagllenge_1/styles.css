@@ -1,0 +1,346 @@
+:root {
+  --white: hsl(0, 0%, 100%);
+  --dark-grayish-blue: hsl(232, 10%, 55%);
+  --grayish-blue: hsl(210, 4%, 67%);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-size: 18px;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* ================== NavBar ================== */
+
+.navbar {
+  position: absolute;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px 40px 0px;
+  z-index: 1;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.links a {
+  font-family: "Barlow", sans-serif;
+  font-weight: 600;
+  color: var(--white);
+  cursor: pointer;
+}
+
+.btn-contact {
+  background-color: var(--white);
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: 32px;
+  transition: 0.2s ease-in-out;
+  transition-property: background-color, color;
+}
+
+.btn-contact > a {
+  color: hsl(212, 27%, 19%);
+  text-transform: uppercase;
+}
+
+.btn-contact:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-contact:hover > a {
+  color: var(--white);
+}
+
+/* ================== Hero ================== */
+
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-image: url("./images/desktop/image-header.jpg");
+  background-size: cover;
+  background-position: center bottom;
+}
+
+.hero-section > img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hero-section > h1 {
+  text-align: center;
+  font-family: "Fraunces", serif;
+  font-size: 48px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 8px;
+  color: var(--white);
+  position: relative;
+  top: 20%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* ================== Services ================== */
+
+.services > div:nth-child(odd) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 120px;
+  gap: 40px;
+  font-family: "Fraunces", serif;
+  color: hsl(212, 27%, 19%);
+}
+
+.services > div:nth-child(odd) > h2 {
+  font-size: 42px;
+}
+
+.services > div:nth-child(odd) > p {
+  font-family: "Barlow", sans-serif;
+  font-weight: 600;
+  color: var(--grayish-blue);
+}
+
+.services > div:nth-child(odd) > a {
+  position: relative;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: inline;
+  color: hsl(212, 27%, 19%);
+}
+
+.services > div:nth-child(odd) > a::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background-color: hsl(51, 100%, 49%);
+  opacity: 0.4;
+  transition: opacity 0.2s ease-in;
+  z-index: -1;
+}
+
+.services > div:nth-child(odd) > a:hover::before {
+  opacity: 1;
+}
+
+.services > div:nth-child(even) > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.services > div:nth-child(3) {
+  order: 4;
+}
+
+.services > div:nth-child(3) > a::before {
+  background-color: hsl(7, 99%, 70%);
+}
+
+/* ================== Projects ================== */
+
+.projects div {
+  flex: 1;
+  background-position: center;
+  background-size: cover;
+  height: 560px; /* TODO: you should think to another solution. */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  text-align: center;
+  padding: 180px 180px 80px;
+  object-fit: cover;
+}
+
+.projects div:nth-child(1) {
+  background-image: url("./images/desktop/image-graphic-design.jpg");
+  color: hsl(167, 40%, 24%);
+}
+
+.projects div:nth-child(2) {
+  background-image: url("./images/desktop/image-photography.jpg");
+  color: hsl(198, 62%, 26%);
+}
+
+.projects div h3 {
+  font-family: "Fraunces", serif;
+  font-weight: 900;
+  font-size: 32px;
+  margin-bottom: 32px;
+}
+
+.projects div p {
+  font-family: "Barlow", sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+/* ================== Testimonials ================== */
+
+.testimonials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  padding: 0 120px;
+}
+
+.testimonials > h4 {
+  font-family: "Fraunces", serif;
+  font-weight: 700;
+  font-size: 22px;
+  text-transform: uppercase;
+  letter-spacing: 6px;
+  color: var(--grayish-blue);
+}
+
+.testimonial-cards {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+.testimonial-card {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 48px;
+  padding-block: 64px;
+}
+
+.testimonial-card > img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  align-self: center;
+}
+
+.testimonial-card > p {
+  font-family: "Barlow", sans-serif;
+  font-weight: 600;
+  color: var(--dark-grayish-blue);
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.testimonial-card > div > h5 {
+  font-family: "Fraunces", serif;
+  font-weight: 900;
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: hsl(212, 27%, 19%);
+}
+
+.testimonial-card > div > p {
+  font-family: "Barlow", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--grayish-blue);
+}
+
+/* ================== Gallery ================== */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.gallery img {
+  width: 100%;
+  aspect-ratio: 0;
+  object-fit: cover;
+}
+
+/* ================== Footer ================== */
+
+footer {
+  background-color: hsl(168deg 45% 60%);
+  padding: 60px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 300px;
+}
+
+footer > div {
+  text-align: center;
+}
+
+footer > div > svg {
+  scale: 1.2;
+}
+
+footer > div > svg > path {
+  fill: hsla(167, 40%, 24%);
+}
+
+footer ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+}
+
+footer > div > ul {
+  margin-top: 32px;
+}
+
+footer > div > .links > li > a {
+  color: hsla(167, 40%, 24%);
+  transition: color 0.2s ease-out;
+}
+
+footer > div > ul > li:hover > a {
+  color: var(--white);
+}
+
+.socials {
+  gap: 24px;
+}
+
+ul.socials > li > a > svg {
+  scale: 1.1;
+}
+
+ul.socials > li > a > svg > path {
+  fill: hsla(167, 40%, 24%);
+  transition: fill 0.2s ease-out;
+}
+
+.socials li:hover svg path {
+  fill: var(--white);
+}

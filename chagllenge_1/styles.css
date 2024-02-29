@@ -49,12 +49,15 @@ a {
 
 .btn-contact {
   background-color: var(--white);
-  font-family: "Fraunces", serif;
-  font-weight: 700;
-  padding: 10px 18px;
+  padding: 10px 20px;
   border-radius: 32px;
   transition: 0.2s ease-in-out;
   transition-property: background-color, color;
+}
+
+.btn-contact > a {
+  font-family: "Fraunces", serif;
+  font-weight: 700;
 }
 
 .btn-contact > a {
@@ -72,7 +75,7 @@ a {
 
 /* ================== Hero ================== */
 
-.hero-section {
+.hero {
   position: relative;
   width: 100%;
   height: 100vh;
@@ -81,14 +84,15 @@ a {
   background-position: center bottom;
 }
 
-.hero-section > img {
+.hero > svg {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 50px;
 }
 
-.hero-section > h1 {
+.hero > h1 {
   text-align: center;
   font-family: "Fraunces", serif;
   font-size: 48px;
@@ -100,12 +104,12 @@ a {
   top: 20%;
 }
 
+/* ================== Services ================== */
+
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
-
-/* ================== Services ================== */
 
 .services > div:nth-child(odd) {
   display: flex;
@@ -153,7 +157,7 @@ a {
   opacity: 1;
 }
 
-.services > div:nth-child(even) > img {
+.services > div:nth-child(even) img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -170,10 +174,9 @@ a {
 /* ================== Projects ================== */
 
 .projects div {
-  flex: 1;
   background-position: center;
   background-size: cover;
-  height: 560px; /* TODO: you should think to another solution. */
+  aspect-ratio: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -195,15 +198,15 @@ a {
 .projects div h3 {
   font-family: "Fraunces", serif;
   font-weight: 900;
-  font-size: 32px;
+  font-size: 36px;
   margin-bottom: 32px;
 }
 
 .projects div p {
   font-family: "Barlow", sans-serif;
   font-weight: 600;
-  font-size: 18px;
-  line-height: 1.5;
+  font-size: 20px;  
+  line-height: 1.7;
 }
 
 /* ================== Testimonials ================== */
@@ -253,7 +256,7 @@ a {
   font-weight: 600;
   color: var(--dark-grayish-blue);
   font-size: 18px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .testimonial-card > div > h5 {
@@ -281,6 +284,7 @@ a {
 .gallery img {
   width: 100%;
   aspect-ratio: 0;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -343,4 +347,202 @@ ul.socials > li > a > svg > path {
 
 .socials li:hover svg path {
   fill: var(--white);
+}
+
+#hamburger-menu {
+  position: relative;
+  display: none;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+#hamburger-menu > span {
+  position: relative;
+  width: 100%;
+  height: 2px;
+  display: block;
+  background-color: var(--white);
+  border-radius: 2px;
+}
+
+#hamburger-menu > span::before, #hamburger-menu > span::after {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 2px;
+  top: 20px;
+  background-color: var(--white);
+  border-radius: 2px;
+}
+
+#hamburger-menu > span::after {
+  top: 10px;
+}
+
+
+@media screen and (max-width: 376px) {
+  /* ================== NavBar ================== */
+
+  .navbar {
+    padding: 30px 20px 0px;
+  }
+  
+  .navbar > .links {
+    position: absolute;
+    flex-direction: column;
+    top: 120px;
+    width: 90%;
+    padding: 40px 0px;
+    background-color: var(--white);
+    display: none;
+  }
+
+  .navbar > .links a {
+    color: var(--dark-grayish-blue);
+    font-size: 22px;
+    line-height: 22px;
+  }
+  
+  .btn-contact, .navbar > .links .btn-contact:hover {
+    background-color: rgb(251, 214, 1);
+    padding: 18px 32px;
+  }
+
+  .navbar > .links .btn-contact > a, .navbar > .links .btn-contact:hover {
+    color: black;
+    font-size: 18px;
+  } 
+
+  .navbar > .links .btn-contact:active {
+    background-color: rgba(251, 214, 1, .5);
+  }
+  
+  .navbar > .links .btn-contact:active > a {
+    color: rgba(0, 0, 0, 0.7);
+  }
+
+  .navbar > .links::before {
+    content: '';
+    position: absolute;
+    flex-direction: column;
+    top: -29px;
+    right: 0;
+    border: 15px solid var(--white);
+    border-top-color: transparent;
+    border-left-color: transparent;
+  }
+
+    #hamburger-menu {
+      display: block;
+    }
+  
+  /* ================== Hero ================== */
+    .hero {
+      background-image: url('./images/mobile/image-header.jpg');
+    }
+  
+    .hero > svg {
+      transform: translate(-50%, 35%);
+      scale: 1 1.1;
+    }
+  
+    .hero > h1 {
+      font-size: 40px;
+      top: 25%;
+    }
+  
+  /* ================== Services ================== */
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .services > div:nth-child(odd) {
+      padding: 48px 23px;
+      text-align: center;
+      align-items: center;
+      gap: 24px;
+    }
+  
+    .services > div:nth-child(odd) > h2 {
+      font-size: 32px;
+      font-weight: 900;
+    }
+  
+    .services > div:nth-child(odd) > p {
+      font-size: 18px;
+      line-height: 1.5;
+    }
+  
+    .services > div:nth-child(odd) > a {
+      font-size: 16px;
+    }
+
+    .services > div:nth-child(1) {
+      order: 2;
+    }
+
+    .services > div:nth-child(2) {
+      order: 1;
+    }
+
+    .services > div:nth-child(3) {
+      order: 4;
+    }
+    
+    .services > div:nth-child(4) {
+      order: 3;
+    }
+  
+  /* ================== Projects ================== */
+  .projects div {
+    height: 100vh;
+    aspect-ratio: unset;
+    padding: 64px 16px;
+  }
+  
+  .projects div:nth-child(1) {
+    background-image: url("./images/mobile/image-graphic-design.jpg");
+  }
+  
+  .projects div:nth-child(2) {
+    background-image: url("./images/mobile/image-photography.jpg");
+  }
+
+  .projects div p {
+    font-size: 16px;
+  }
+
+  /* ================== Testimonials ================== */
+  .testimonials {
+    height: unset;
+    padding: 64px 24px;
+  }
+
+  .testimonials > h4 {
+    text-align: center;
+    font-size: 18px;
+    letter-spacing: 4px;
+    margin-bottom: 64px;
+  }
+  
+  .testimonial-cards { 
+    flex-direction: column;
+    gap: 64px;
+  }
+
+  .testimonial-card {
+    padding-block: 0px;
+  }
+  
+  /* ================== Gallery ================== */
+  .gallery {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+
+  .gallery img {
+    aspect-ratio: 1;
+  }
+  /* ================== Footer ================== */
 }

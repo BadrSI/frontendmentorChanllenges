@@ -64,7 +64,8 @@ button {
   padding: 2rem 1rem;
 }
 
-.comments,
+#comments, 
+.comment,
 .comment-replay-container {
   display: flex;
   flex-direction: column;
@@ -163,7 +164,11 @@ button {
   color: var(--n-white);
 }
 
-.content-container .comment {
+.content-container {
+  width: 100%;
+}
+
+.content-container .comment-content {
   color: var(--n-grayish-blue);
   font-weight: var(--f-400);
   line-height: 1.5;

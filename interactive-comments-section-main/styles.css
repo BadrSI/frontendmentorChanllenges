@@ -207,6 +207,10 @@ button {
 
 /* ==================== Form Comment ==================== */
 
+.comment-form {
+  gap: 1rem !important;
+}
+
 .comment-form > img {
   width: 2.5rem;
   aspect-ratio: 1;
@@ -355,5 +359,6 @@ dialog {
   .comment-form > button {
     grid-row: -1;
     grid-column: 5/-1;
+    padding: .875rem 0;
   }
 }

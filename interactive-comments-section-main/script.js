@@ -1,4 +1,4 @@
-
+// TODO: try data attibutes solution.
 import data from './data.json' assert {type: 'json'}
 // const data = {currentUser: '', comments: []};
 const {currentUser, comments} = data;
@@ -13,8 +13,8 @@ function createElementWithClass(elementTag, ...className) {
   return element;
 }
 
-function createCommentComponent(commentDetails, currentUser, isReplayComment = false) { 
-  const {id, content, createdAt, score, user} = commentDetails;// TODO: isReplayComment
+function createCommentComponent(commentDetails, currentUser) { 
+  const {id, content, createdAt, score, user} = commentDetails;
   const {username, image } = currentUser;
   const commentElemetTemplate = `
 <div id="${user.username}" data-comment-id="${id}" class="comment">
@@ -22,17 +22,17 @@ function createCommentComponent(commentDetails, currentUser, isReplayComment = f
     <div class="comment-container">
       <div class="mobile">
         <div class="counter-container">
-          <button>
+          <button onclick="toggleScore('${id}', '+')">
             <svg width="11" height="11" xmlns="http://www.w3.org/2000/svg"><path d="M6.33 10.896c.137 0 .255-.05.354-.149.1-.1.149-.217.149-.354V7.004h3.315c.136 0 .254-.05.354-.149.099-.1.148-.217.148-.354V5.272a.483.483 0 0 0-.148-.354.483.483 0 0 0-.354-.149H6.833V1.4a.483.483 0 0 0-.149-.354.483.483 0 0 0-.354-.149H4.915a.483.483 0 0 0-.354.149c-.1.1-.149.217-.149.354v3.37H1.08a.483.483 0 0 0-.354.15c-.1.099-.149.217-.149.353v1.23c0 .136.05.254.149.353.1.1.217.149.354.149h3.333v3.39c0 .136.05.254.15.353.098.1.216.149.353.149H6.33Z" fill="#C5C6EF"/></svg>
           </button>
           <p>${score}</p>
-          <button>
+          <button onclick="toggleScore('${id}', '-')">
             <svg width="11" height="6" xmlns="http://www.w3.org/2000/svg"><path d="M9.256 2.66c.204 0 .38-.056.53-.167.148-.11.222-.243.222-.396V.722c0-.152-.074-.284-.223-.395a.859.859 0 0 0-.53-.167H.76a.859.859 0 0 0-.53.167C.083.437.009.57.009.722v1.375c0 .153.074.285.223.396a.859.859 0 0 0 .53.167h8.495Z" fill="#C5C6EF"/></svg>
           </button>
         </div>
         <div class="interactive-btns">
           ${username !== user.username ? 
-            (`<button class="secondary-btn">
+            (`<button class="secondary-btn" onclick="replayToComment(${user.username})">
               <svg width="14" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M.227 4.316 5.04.16a.657.657 0 0 1 1.085.497v2.189c4.392.05 7.875.93 7.875 5.093 0 1.68-1.082 3.344-2.279 4.214-.373.272-.905-.07-.767-.51 1.24-3.964-.588-5.017-4.829-5.078v2.404c0 .566-.664.86-1.085.496L.227 5.31a.657.657 0 0 1 0-.993Z" fill="#5357B6"/></svg>
               Replay
             </button>`) : 
@@ -126,29 +126,31 @@ for (let i = 0; i < comments.length; i++) {
 
 containerDiv.innerHTML += createAddCommentFormComponent(currentUser);
 
-window.replayToComment = function (replayTo) {
-  const replayCommentForm = replayTo.querySelector('.comment-form');
+window.replayToComment = function (replayToCommentElement) {
+  colseOpenedReplayCommentFormComponent();
+  const replayCommentForm = replayToCommentElement.querySelector('.comment-form');
   if (replayCommentForm !== null){
     replayCommentForm.querySelector('textarea').focus();
     return;
   }
 
   const textareaId = `_${Math.floor(Math.random() * 10000)}`
-  replayTo.querySelector('.comment-replay-container').innerHTML += createAddCommentFormComponent(currentUser, textareaId, "replay", 'addUserReplayComment')
-  const textareaEle = replayTo.querySelector(`#${textareaId}`);
+  replayToCommentElement.querySelector('.comment-replay-container').innerHTML += createAddCommentFormComponent(currentUser, textareaId, "replay", 'addUserReplayComment')
+  const textareaEle = replayToCommentElement.querySelector(`#${textareaId}`);
   console.log(textareaEle);
-  textareaEle.value = `@${replayTo.getAttribute('id')}, `;
+  textareaEle.value = `@${replayToCommentElement.getAttribute('id')}, `;
   textareaEle.focus();
 }
 
-window.addUserComment = function (textareaId) {
-  console.log('send:', textareaId.getAttribute('id'));
-  const content = textareaId.value.trim();
+window.addUserComment = function (targetTextareaElement) {
+  console.log(targetTextareaElement)
+  console.log('send:', targetTextareaElement.getAttribute('id'));
+  const content = targetTextareaElement.value.trim();
   if(!content) {
-    textareaId.focus();
+    targetTextareaElement.focus();
     return;
   }
-  console.log('send:', textareaId.value);
+  console.log('send:', targetTextareaElement.value);
   const newUserCommentData = {
     id: genrateCommentId(),
     content,
@@ -162,27 +164,26 @@ window.addUserComment = function (textareaId) {
   console.log(comments);
   document.getElementById('comments').innerHTML += createCommentComponent(newUserCommentData, currentUser);
 
-  textareaId.value = '';
+  targetTextareaElement.value = '';
 }
 
-window.addUserReplayComment = function (textareaId) {
-  console.log('clicked'.trim().in);
-  const textareaValue = textareaId.value.trim();
+window.addUserReplayComment = function (tagetReplayTextareaElement) {
+  console.log(tagetReplayTextareaElement);
+  const textareaValue = tagetReplayTextareaElement.value.trim();
   const endOfTagIndex = textareaValue.indexOf(',');
   const replyingToTagUsername = textareaValue.slice(1, endOfTagIndex);
   const content = textareaValue.slice(endOfTagIndex+1).trimStart();
-  console.log("textareaId.value:", textareaId.value)
+  console.log("textareaId.value:", tagetReplayTextareaElement.value)
   console.log("endOfTagIndex:", endOfTagIndex)
   console.log("replyingToTagUsername:", replyingToTagUsername)
   console.log("content:", content);
 
-
   if (!content) {
-    textareaId.focus();
+    tagetReplayTextareaElement.focus();
     return;
   }
-  let repliesContainerDiv = document.querySelector(`#${replyingToTagUsername} .replies-container`);
-  
+
+  let repliesContainerDiv = document.querySelector(`#${replyingToTagUsername} .replies-container`); 
   if (!repliesContainerDiv) {
     // check if the current replay comment is replay to normal comments or replies commens.
     const isRepliesComment = document.querySelector(`#${replyingToTagUsername}`).parentElement.getAttribute('class') === 'replies-container';
@@ -214,11 +215,49 @@ window.addUserReplayComment = function (textareaId) {
       return;
     }
   });
-  console.log(comments);
+
   repliesContainerDiv.innerHTML += createCommentComponent(newUserReplayCommentData, currentUser);
 
   // remove the comment component:
-  document.getElementById(textareaId.getAttribute('id')).parentElement.remove();
+  document.getElementById(tagetReplayTextareaElement.getAttribute('id')).parentElement.remove();
+}
+
+window.toggleScore = function (id, action) {
+  const targetCommentScoreElement = document.querySelector(`div[data-comment-id="${id}"] > .comment-replay-container .counter-container > p`)
+  console.log(targetCommentScoreElement);//.counter-container > p
+  console.log(id);
+  console.log('score: ', +targetCommentScoreElement.innerText );
+  let currentScore = +targetCommentScoreElement.innerText;
+  const previousUserAction = targetCommentScoreElement.getAttribute('data-aready-scored');
+  if (action === '+' && previousUserAction != action) {
+    // //update the score of the comment the comments araay.
+    targetCommentScoreElement.setAttribute('data-aready-scored', "+");
+    // increment the Score counter UI.
+    targetCommentScoreElement.innerText = ++currentScore;
+  } else if (action === '-' && previousUserAction != action) {
+    // //update the score of the comment the comments araay.
+    targetCommentScoreElement.setAttribute('data-aready-scored', "-");
+    // decrement the Score counter UI.
+
+    // targetCommentScoreElement.innerText = currentScore !== 0 ? --currentScore : 0; //? to prevent score to be less than 0
+    targetCommentScoreElement.innerText = --currentScore;
+    } else {
+    return;
+  }
+
+  // updata the score of comment data.
+  comments.forEach((comment => {
+    if(comment.id == id) {
+      comment.score = currentScore;
+      return;
+    }
+    comment.replies.forEach(replayComment => {
+      if (replayComment.id == id) {
+        replayComment.score = currentScore;
+        return;
+      }
+    });
+  }));
 }
 
 function genrateCommentId () { 
@@ -231,3 +270,8 @@ function genrateCommentId () {
 }
 
 
+function colseOpenedReplayCommentFormComponent() {
+  const commentFromElement = document.querySelector(`#comments .comment-form`);
+  if (commentFromElement)
+    commentFromElement.remove();
+}

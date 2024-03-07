@@ -13,10 +13,11 @@ function createElementWithClass(elementTag, ...className) {
   return element;
 }
 
-function createCommentComponent(commentDetails, currentUser) {
-  const {id, content, createdAt, score, user} = commentDetails;
+function createCommentComponent(commentDetails, currentUser, isReplayComment = false) { 
+  const {id, content, createdAt, score, user} = commentDetails;// TODO: isReplayComment
   const {username, image } = currentUser;
-  const commentElemetTemplate = `<div id="${user.username}" class="comment">
+  const commentElemetTemplate = `
+<div id="${user.username}" data-comment-id="${id}" class="comment">
   <div class="comment-replay-container">
     <div class="comment-container">
       <div class="mobile">
@@ -82,7 +83,9 @@ function createCommentComponent(commentDetails, currentUser) {
   return commentElemetTemplate;
 }
 
-function createAddCommentFormComponent(currentUser, textareaId = "mainUserReplaycomment", btnName = "Send") {
+function createAddCommentFormComponent(
+  currentUser, textareaId = "mainUserReplaycomment", 
+  btnName = "Send", onClickHandler = 'addUserComment') {
   const {username, image} = currentUser;
 
   const formElement = `<form class="comment-form">
@@ -92,7 +95,7 @@ function createAddCommentFormComponent(currentUser, textareaId = "mainUserReplay
       type="button" 
       class="primary-btn" 
       ${btnName.toLocaleLowerCase() === 'send' ? 'id="send"': ''}
-      onclick="addUserComment(${textareaId})"
+      onclick="${onClickHandler}(${textareaId})"
     >
     ${btnName}</button>
   </form>`;
@@ -105,7 +108,7 @@ const containerDiv = createElementWithClass('div', 'container');
 document.body.appendChild(containerDiv);
 const commentsDiv = document.createElement('div');
 commentsDiv.setAttribute('id', 'comments');
-console.log(commentsDiv)
+// console.log(commentsDiv)
 containerDiv.appendChild(commentsDiv);
 
 for (let i = 0; i < comments.length; i++) {
@@ -131,7 +134,7 @@ window.replayToComment = function (replayTo) {
   }
 
   const textareaId = `_${Math.floor(Math.random() * 10000)}`
-  replayTo.querySelector('.comment-replay-container').innerHTML += createAddCommentFormComponent(currentUser, textareaId, "replay")
+  replayTo.querySelector('.comment-replay-container').innerHTML += createAddCommentFormComponent(currentUser, textareaId, "replay", 'addUserReplayComment')
   const textareaEle = replayTo.querySelector(`#${textareaId}`);
   console.log(textareaEle);
   textareaEle.value = `@${replayTo.getAttribute('id')}, `;
@@ -151,8 +154,8 @@ window.addUserComment = function (textareaId) {
     content,
     createdAt:'a moment ago',
     score: 0,
-  //   replyingTo:'',
-    user: currentUser
+    user: currentUser,
+    replies: []
   }
   console.log(newUserCommentData)
   comments.push(newUserCommentData);
@@ -160,6 +163,62 @@ window.addUserComment = function (textareaId) {
   document.getElementById('comments').innerHTML += createCommentComponent(newUserCommentData, currentUser);
 
   textareaId.value = '';
+}
+
+window.addUserReplayComment = function (textareaId) {
+  console.log('clicked'.trim().in);
+  const textareaValue = textareaId.value.trim();
+  const endOfTagIndex = textareaValue.indexOf(',');
+  const replyingToTagUsername = textareaValue.slice(1, endOfTagIndex);
+  const content = textareaValue.slice(endOfTagIndex+1).trimStart();
+  console.log("textareaId.value:", textareaId.value)
+  console.log("endOfTagIndex:", endOfTagIndex)
+  console.log("replyingToTagUsername:", replyingToTagUsername)
+  console.log("content:", content);
+
+
+  if (!content) {
+    textareaId.focus();
+    return;
+  }
+  let repliesContainerDiv = document.querySelector(`#${replyingToTagUsername} .replies-container`);
+  
+  if (!repliesContainerDiv) {
+    // check if the current replay comment is replay to normal comments or replies commens.
+    const isRepliesComment = document.querySelector(`#${replyingToTagUsername}`).parentElement.getAttribute('class') === 'replies-container';
+    if (isRepliesComment){ // TODO: we can solve that by using the data attributes. by add data-is-replay-comment
+      repliesContainerDiv = document.querySelector(`#${replyingToTagUsername}`).parentElement;
+      console.log('repliesContainerDiv', repliesContainerDiv);
+    }
+    else {
+      repliesContainerDiv = createElementWithClass('div', 'replies-container');
+      document.querySelector(`#${replyingToTagUsername}`).appendChild(repliesContainerDiv);
+      console.log('repliesContainerDiv', repliesContainerDiv);
+    }
+  }
+
+  const newUserReplayCommentData = {
+    id: genrateCommentId(),
+    content,
+    createdAt:'a moment ago',
+    score: 0,
+    replyingTo: replyingToTagUsername,
+    user: currentUser
+  }
+
+  const mainCommentId = repliesContainerDiv.parentElement.dataset.commentId;
+  // add the replay comment to main comment
+  comments.forEach((comment) => {
+    if (comment['id'] === +mainCommentId){
+      comment['replies'].push(newUserReplayCommentData);
+      return;
+    }
+  });
+  console.log(comments);
+  repliesContainerDiv.innerHTML += createCommentComponent(newUserReplayCommentData, currentUser);
+
+  // remove the comment component:
+  document.getElementById(textareaId.getAttribute('id')).parentElement.remove();
 }
 
 function genrateCommentId () { 

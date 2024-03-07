@@ -1,7 +1,8 @@
 // TODO: try data attibutes solution.
 import data from './data.json' assert {type: 'json'}
 // const data = {currentUser: '', comments: []};
-const {currentUser, comments} = data;
+const {currentUser } = data;
+let {comments} = data; 
 console.log(currentUser, comments);
 
 function createElementWithClass(elementTag, ...className) {
@@ -36,7 +37,7 @@ function createCommentComponent(commentDetails, currentUser) {
               <svg width="14" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M.227 4.316 5.04.16a.657.657 0 0 1 1.085.497v2.189c4.392.05 7.875.93 7.875 5.093 0 1.68-1.082 3.344-2.279 4.214-.373.272-.905-.07-.767-.51 1.24-3.964-.588-5.017-4.829-5.078v2.404c0 .566-.664.86-1.085.496L.227 5.31a.657.657 0 0 1 0-.993Z" fill="#5357B6"/></svg>
               Replay
             </button>`) : 
-            (`<button class="secondary-btn delete-btn">
+            (`<button class="secondary-btn delete-btn" onclick="deleteUserComment(${id})">
                 <svg width="12" height="14" xmlns="http://www.w3.org/2000/svg"><path d="M1.167 12.448c0 .854.7 1.552 1.555 1.552h6.222c.856 0 1.556-.698 1.556-1.552V3.5H1.167v8.948Zm10.5-11.281H8.75L7.773 0h-3.88l-.976 1.167H0v1.166h11.667V1.167Z" fill="#ED6368"/></svg>
                 Delete
               </button>
@@ -60,7 +61,7 @@ function createCommentComponent(commentDetails, currentUser) {
                 <svg width="14" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M.227 4.316 5.04.16a.657.657 0 0 1 1.085.497v2.189c4.392.05 7.875.93 7.875 5.093 0 1.68-1.082 3.344-2.279 4.214-.373.272-.905-.07-.767-.51 1.24-3.964-.588-5.017-4.829-5.078v2.404c0 .566-.664.86-1.085.496L.227 5.31a.657.657 0 0 1 0-.993Z" fill="#5357B6"/></svg>
                 Replay
               </button>`) : 
-              (`<button class="secondary-btn delete-btn">
+              (`<button class="secondary-btn delete-btn" onclick="deleteUserComment(${id})">
                   <svg width="12" height="14" xmlns="http://www.w3.org/2000/svg"><path d="M1.167 12.448c0 .854.7 1.552 1.555 1.552h6.222c.856 0 1.556-.698 1.556-1.552V3.5H1.167v8.948Zm10.5-11.281H8.75L7.773 0h-3.88l-.976 1.167H0v1.166h11.667V1.167Z" fill="#ED6368"/></svg>
                   Delete
                 </button>
@@ -103,28 +104,24 @@ function createAddCommentFormComponent(
   return formElement;
 }
 
+function createModalComponent(targetCommentId) {
+  const modoleElement = `
+  <dialog id="dialog">
+    <div class="dailog-content">
+      <h1>Delete Comment</h1>
+      <p>Are you sure you want to delete this comment? This will remove the comment and can't be undone.</p>
+      <div role="form">
+        <button onclick="cancelDeletionComment()" >No, Cancel</button>
+        <button onclick="deleteComment(${targetCommentId})" >Yes, Delete</button>
+      </div>
+    </div>
+  </dialog>
+  `
 
-const containerDiv = createElementWithClass('div', 'container');
-document.body.appendChild(containerDiv);
-const commentsDiv = document.createElement('div');
-commentsDiv.setAttribute('id', 'comments');
-// console.log(commentsDiv)
-containerDiv.appendChild(commentsDiv);
-
-for (let i = 0; i < comments.length; i++) {
-  commentsDiv.innerHTML += createCommentComponent(comments[i], currentUser);
-  if (comments[i].replies.length !== 0) {
-    const repliesContainerDiv = createElementWithClass('div', 'replies-container');
-    // document.getElementById(comments[i].user.username)
-    for (let j = 0; j < comments[i].replies.length; j++) {
-      repliesContainerDiv.innerHTML += createCommentComponent(comments[i].replies[j], currentUser);
-    }
-    commentsDiv.lastChild.appendChild(repliesContainerDiv);
-  }
-  
+  return modoleElement;
 }
 
-containerDiv.innerHTML += createAddCommentFormComponent(currentUser);
+
 
 window.replayToComment = function (replayToCommentElement) {
   colseOpenedReplayCommentFormComponent();
@@ -230,15 +227,12 @@ window.toggleScore = function (id, action) {
   let currentScore = +targetCommentScoreElement.innerText;
   const previousUserAction = targetCommentScoreElement.getAttribute('data-aready-scored');
   if (action === '+' && previousUserAction != action) {
-    // //update the score of the comment the comments araay.
     targetCommentScoreElement.setAttribute('data-aready-scored', "+");
     // increment the Score counter UI.
     targetCommentScoreElement.innerText = ++currentScore;
   } else if (action === '-' && previousUserAction != action) {
-    // //update the score of the comment the comments araay.
     targetCommentScoreElement.setAttribute('data-aready-scored', "-");
     // decrement the Score counter UI.
-
     // targetCommentScoreElement.innerText = currentScore !== 0 ? --currentScore : 0; //? to prevent score to be less than 0
     targetCommentScoreElement.innerText = --currentScore;
     } else {
@@ -260,6 +254,31 @@ window.toggleScore = function (id, action) {
   }));
 }
 
+
+window.deleteUserComment = function (targetCommentId) {
+  document.body.innerHTML += createModalComponent(targetCommentId);
+  document.getElementById('dialog').showModal();
+}
+
+window.deleteComment = function (targetCommentId) {
+  // delete the removed comment form comment data.
+  comments = comments.filter(comment => {
+    comment.replies = comment.replies.filter(replay => replay.id != targetCommentId) 
+    return comment.id != targetCommentId;
+  });
+  console.log('filteredComments:',comments);
+  document.querySelector(`[data-comment-id="${targetCommentId}"]`).remove()
+  const modalElement = document.getElementById('dialog')
+  modalElement.close();
+  modalElement.remove();
+};
+
+window.cancelDeletionComment = function () {
+  const modalElement = document.getElementById('dialog');
+  modalElement.close();
+  modalElement.remove();
+};
+
 function genrateCommentId () { 
   let counter = 0
   for (let i = 0; i < comments.length; i++, counter++) {
@@ -275,3 +294,21 @@ function colseOpenedReplayCommentFormComponent() {
   if (commentFromElement)
     commentFromElement.remove();
 }
+
+const commentsDiv = document.getElementById('comments');
+console.log(commentsDiv)
+
+for (let i = 0; i < comments.length; i++) {
+  commentsDiv.innerHTML += createCommentComponent(comments[i], currentUser);
+  if (comments[i].replies.length !== 0) {
+    const repliesContainerDiv = createElementWithClass('div', 'replies-container');
+    // document.getElementById(comments[i].user.username)
+    for (let j = 0; j < comments[i].replies.length; j++) {
+      repliesContainerDiv.innerHTML += createCommentComponent(comments[i].replies[j], currentUser);
+    }
+    commentsDiv.lastChild.appendChild(repliesContainerDiv);
+  }
+  
+}
+
+commentsDiv.parentElement.innerHTML += createAddCommentFormComponent(currentUser);

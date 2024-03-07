@@ -256,12 +256,14 @@ button {
 
 /* ==================== Dailog ==================== */
 dialog {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   border: none;
   border-radius: 1rem;
+  margin: auto;
+  z-index: 9999;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .dailog-content {
@@ -360,5 +362,17 @@ dialog {
     grid-row: -1;
     grid-column: 5/-1;
     padding: .875rem 0;
+  }
+}
+
+
+@media screen and (max-width: 378px) {
+  .dailog-content {
+    padding: 1rem ;
+  }
+  
+  .dailog-content > div button {
+    padding-inline: 0;
+    font-size: .75rem;
   }
 }

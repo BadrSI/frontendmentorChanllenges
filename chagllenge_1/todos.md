@@ -1,1 +1,0 @@
-- fix the Contact button font style

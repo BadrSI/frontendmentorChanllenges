@@ -1,9 +1,15 @@
-// TODO: try data attibutes solution.
 import data from './data.json' assert {type: 'json'}
-// const data = {currentUser: '', comments: []};
-const {currentUser } = data;
-let {comments} = data; 
-console.log(currentUser, comments);
+
+console.log('currentUser:',getDataFromLocalStorage('currentUser'), 'comments:', getDataFromLocalStorage('comments'))
+
+const currentUser = getDataFromLocalStorage('currentUser') ?? 
+                setDataInLocalSorage('currentUser', data.currentUser) ?? 
+                data.currentUser; 
+
+let comments = getDataFromLocalStorage('comments') ?? 
+            setDataInLocalSorage('comments', data.comments) ?? 
+            data.comments;
+
 
 function createElementWithClass(elementTag, ...className) {
   const element = document.createElement(elementTag);
@@ -391,9 +397,28 @@ function extractCommentContentText(commnetContentParagraphElement) {
   return `${tagUsername}${commentContentText}`;
 }
 
+window.addEventListener("beforeunload", function(e){
+  // save the added comments of the user in local storage when use close the page or refersh page.
+  setDataInLocalSorage('comments', comments);
+});
+
+function getDataFromLocalStorage(key) {
+  const value = localStorage.getItem(key);
+  if (value === undefined)
+    return null;
+  return JSON.parse(value);
+}
+
+function setDataInLocalSorage(key, value) {
+  if (typeof value !== 'string')
+    localStorage.setItem(key, JSON.stringify(value));
+  else
+    slocalStorage.setItem(key, JSON.stringify(value));
+}
+
 function renderComments() {
   const commentsDiv = document.getElementById('comments');
-  console.log(commentsDiv)
+  console.log(commentsDiv);
 
   for (let i = 0; i < comments.length; i++) {
     commentsDiv.innerHTML += createCommentComponent(comments[i], currentUser);
@@ -411,4 +436,4 @@ function renderComments() {
   commentsDiv.parentElement.innerHTML += createAddCommentFormComponent(currentUser);
 }
 
-renderComments()
+renderComments();

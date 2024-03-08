@@ -64,7 +64,8 @@ button {
   padding: 2rem 1rem;
 }
 
-.comments,
+#comments, 
+.comment,
 .comment-replay-container {
   display: flex;
   flex-direction: column;
@@ -163,7 +164,11 @@ button {
   color: var(--n-white);
 }
 
-.content-container .comment {
+.content-container {
+  width: 100%;
+}
+
+.content-container .comment-content {
   color: var(--n-grayish-blue);
   font-weight: var(--f-400);
   line-height: 1.5;
@@ -201,6 +206,10 @@ button {
 }
 
 /* ==================== Form Comment ==================== */
+
+.comment-form {
+  gap: 1rem !important;
+}
 
 .comment-form > img {
   width: 2.5rem;
@@ -247,12 +256,14 @@ button {
 
 /* ==================== Dailog ==================== */
 dialog {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   border: none;
   border-radius: 1rem;
+  margin: auto;
+  z-index: 9999;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .dailog-content {
@@ -288,6 +299,29 @@ dialog {
 .dailog-content > div button:nth-child(2) {
   flex: 1;
   background-color: var(--p-soft-red);
+}
+
+.content-container .comment-form {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0rem;
+  row-gap: 1rem;
+  align-items: center;
+  padding: 0rem;
+}
+
+.content-container .comment-form > textarea {
+  grid-column: 1 / -1;
+  grid-row: 1 / 3;
+}
+
+.content-container .comment-form > button {
+  grid-row: -1;
+  grid-row-start: -1;
+  grid-row-end: auto;
+  grid-column: 6 / -1;
+  padding: 0.875rem 0;
 }
 
 @media screen and (max-width: 645px) {
@@ -350,5 +384,22 @@ dialog {
   .comment-form > button {
     grid-row: -1;
     grid-column: 5/-1;
+    padding: .875rem 0;
+  }
+
+  .content-container .comment-form > button {
+    padding: 0.875rem 1.25rem;
+  }
+}
+
+
+@media screen and (max-width: 378px) {
+  .dailog-content {
+    padding: 1rem ;
+  }
+  
+  .dailog-content > div button {
+    padding-inline: 0;
+    font-size: .75rem;
   }
 }

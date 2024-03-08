@@ -41,7 +41,7 @@ function createCommentComponent(commentDetails, currentUser) {
                 <svg width="12" height="14" xmlns="http://www.w3.org/2000/svg"><path d="M1.167 12.448c0 .854.7 1.552 1.555 1.552h6.222c.856 0 1.556-.698 1.556-1.552V3.5H1.167v8.948Zm10.5-11.281H8.75L7.773 0h-3.88l-.976 1.167H0v1.166h11.667V1.167Z" fill="#ED6368"/></svg>
                 Delete
               </button>
-              <button class="secondary-btn">
+              <button class="secondary-btn" onclick="editUserComment(${id})">
                 <svg width="14" height="14" xmlns="http://www.w3.org/2000/svg"><path d="M13.479 2.872 11.08.474a1.75 1.75 0 0 0-2.327-.06L.879 8.287a1.75 1.75 0 0 0-.5 1.06l-.375 3.648a.875.875 0 0 0 .875.954h.078l3.65-.333c.399-.04.773-.216 1.058-.499l7.875-7.875a1.68 1.68 0 0 0-.061-2.371Zm-2.975 2.923L8.159 3.449 9.865 1.7l2.389 2.39-1.75 1.706Z" fill="#5357B6"/></svg>
                 Edit
               </button>`)
@@ -51,26 +51,26 @@ function createCommentComponent(commentDetails, currentUser) {
       <div class="content-container">
         <div class="header-info" >
         <div class="user-info">
-            <img src="${user.image.webp}" alt="image ${user.username}" />
-            <p class="user-name">${user.username}</p>
-            <p class="comment-at">${createdAt}</p>
-          </div>
-          <div class="interactive-btns">
-            ${username !== user.username ? 
-              (`<button class="secondary-btn" onclick="replayToComment(${user.username})">
-                <svg width="14" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M.227 4.316 5.04.16a.657.657 0 0 1 1.085.497v2.189c4.392.05 7.875.93 7.875 5.093 0 1.68-1.082 3.344-2.279 4.214-.373.272-.905-.07-.767-.51 1.24-3.964-.588-5.017-4.829-5.078v2.404c0 .566-.664.86-1.085.496L.227 5.31a.657.657 0 0 1 0-.993Z" fill="#5357B6"/></svg>
-                Replay
-              </button>`) : 
-              (`<button class="secondary-btn delete-btn" onclick="deleteUserComment(${id})">
-                  <svg width="12" height="14" xmlns="http://www.w3.org/2000/svg"><path d="M1.167 12.448c0 .854.7 1.552 1.555 1.552h6.222c.856 0 1.556-.698 1.556-1.552V3.5H1.167v8.948Zm10.5-11.281H8.75L7.773 0h-3.88l-.976 1.167H0v1.166h11.667V1.167Z" fill="#ED6368"/></svg>
-                  Delete
-                </button>
-                <button class="secondary-btn">
-                  <svg width="14" height="14" xmlns="http://www.w3.org/2000/svg"><path d="M13.479 2.872 11.08.474a1.75 1.75 0 0 0-2.327-.06L.879 8.287a1.75 1.75 0 0 0-.5 1.06l-.375 3.648a.875.875 0 0 0 .875.954h.078l3.65-.333c.399-.04.773-.216 1.058-.499l7.875-7.875a1.68 1.68 0 0 0-.061-2.371Zm-2.975 2.923L8.159 3.449 9.865 1.7l2.389 2.39-1.75 1.706Z" fill="#5357B6"/></svg>
-                  Edit
-                </button>`)
-            }
-          </div>
+          <img src="${user.image.webp}" alt="image ${user.username}" />
+          <p class="user-name">${user.username}</p>
+          <p class="comment-at">${createdAt}</p>
+        </div>
+        <div class="interactive-btns">
+          ${username !== user.username ? 
+            (`<button class="secondary-btn" onclick="replayToComment(${user.username})">
+              <svg width="14" height="13" xmlns="http://www.w3.org/2000/svg"><path d="M.227 4.316 5.04.16a.657.657 0 0 1 1.085.497v2.189c4.392.05 7.875.93 7.875 5.093 0 1.68-1.082 3.344-2.279 4.214-.373.272-.905-.07-.767-.51 1.24-3.964-.588-5.017-4.829-5.078v2.404c0 .566-.664.86-1.085.496L.227 5.31a.657.657 0 0 1 0-.993Z" fill="#5357B6"/></svg>
+              Replay
+            </button>`) : 
+            (`<button class="secondary-btn delete-btn" onclick="deleteUserComment(${id})">
+                <svg width="12" height="14" xmlns="http://www.w3.org/2000/svg"><path d="M1.167 12.448c0 .854.7 1.552 1.555 1.552h6.222c.856 0 1.556-.698 1.556-1.552V3.5H1.167v8.948Zm10.5-11.281H8.75L7.773 0h-3.88l-.976 1.167H0v1.166h11.667V1.167Z" fill="#ED6368"/></svg>
+                Delete
+              </button>
+              <button class="secondary-btn" onclick="editUserComment(${id})">
+                <svg width="14" height="14" xmlns="http://www.w3.org/2000/svg"><path d="M13.479 2.872 11.08.474a1.75 1.75 0 0 0-2.327-.06L.879 8.287a1.75 1.75 0 0 0-.5 1.06l-.375 3.648a.875.875 0 0 0 .875.954h.078l3.65-.333c.399-.04.773-.216 1.058-.499l7.875-7.875a1.68 1.68 0 0 0-.061-2.371Zm-2.975 2.923L8.159 3.449 9.865 1.7l2.389 2.39-1.75 1.706Z" fill="#5357B6"/></svg>
+                Edit
+              </button>`)
+          }
+        </div>
         </div>
         <p class="comment-content">
           ${commentDetails?.replyingTo !== undefined ? `<span class="tagged">@${commentDetails?.replyingTo}</span>`: ''}
@@ -121,9 +121,19 @@ function createModalComponent(targetCommentId) {
   return modoleElement;
 }
 
+function createUpdateCommentFormComponent(formId, targetCommentId) {
+  const formElement = `
+  <form id="${formId}" class="comment-form">
+    <textarea placeholder="Add comment" name="comment" required></textarea>
+    <button type="button" class="primary-btn" onclick="updateUserComment(${formId}, ${targetCommentId})">Update</button>
+  </form>
+  `;
 
+  return formElement;
+}
 
 window.replayToComment = function (replayToCommentElement) {
+  backToUneditedCommentState()
   colseOpenedReplayCommentFormComponent();
   const replayCommentForm = replayToCommentElement.querySelector('.comment-form');
   if (replayCommentForm !== null){
@@ -140,7 +150,8 @@ window.replayToComment = function (replayToCommentElement) {
 }
 
 window.addUserComment = function (targetTextareaElement) {
-  console.log(targetTextareaElement)
+  backToUneditedCommentState()
+  console.log(targetTextareaElement);
   console.log('send:', targetTextareaElement.getAttribute('id'));
   const content = targetTextareaElement.value.trim();
   if(!content) {
@@ -279,6 +290,70 @@ window.cancelDeletionComment = function () {
   modalElement.remove();
 };
 
+window.editUserComment = function(targetCommentId) {
+  backToUneditedCommentState();
+  const commentContentContainerDiv = document.querySelector(`[data-comment-id="${targetCommentId}"] .content-container`)
+  console.log(commentContentContainerDiv);
+  const commnetContentParagraph = commentContentContainerDiv.lastElementChild;
+  
+  // return focus to textarea if the edit mode already open.
+  if (commnetContentParagraph.tagName === "FORM") {
+    commnetContentParagraph.firstElementChild.focus(); 
+    return;
+  }
+
+  // hide paragraph comment when user in edit mode.
+  commnetContentParagraph.style.display = 'none'; 
+  
+  // generate form id for edit comment.
+  const formId = `_${Date.now()}`;
+  commentContentContainerDiv.innerHTML += createUpdateCommentFormComponent(formId, targetCommentId);
+  const textareaElememt = document.querySelector(`#${formId} > textarea`);
+  textareaElememt.value = extractCommentContentText(commnetContentParagraph);
+  textareaElememt.focus();
+} 
+
+window.updateUserComment = function (formId, targetCommentId) {
+  const previousCommentContentParagraphElement = formId.previousElementSibling;
+  const oldCommentContent = extractCommentContentText(previousCommentContentParagraphElement);
+  let newCommentContent = formId.firstElementChild.value.trim();
+  
+  if (oldCommentContent !== newCommentContent) { // means the user change the previous comment
+    const isReplayComment = newCommentContent.startsWith('@')
+    let spanTagElement;
+    if (isReplayComment) {
+      spanTagElement = previousCommentContentParagraphElement.firstElementChild;
+      // remove the username tag from the newCommentContent
+      newCommentContent = newCommentContent.slice(spanTagElement.innerHTML.length).trimStart();
+    }
+    
+    // update the comments data.
+    comments.forEach(comment => {
+      if (comment.id === targetCommentId) {
+        comment.content = newCommentContent;
+        return;
+      }
+      comment.replies.forEach(replayComment => {
+        if (replayComment.id === targetCommentId) {
+          replayComment.content = newCommentContent;
+          return;
+        }
+      })
+    })
+
+    // update the UI.
+    previousCommentContentParagraphElement.innerText = '';
+    if (isReplayComment) 
+      previousCommentContentParagraphElement.appendChild(spanTagElement)
+    previousCommentContentParagraphElement.append(newCommentContent)
+
+    console.log('comment data is updated', comments);
+  }// otherwise the comment does not changed.
+  
+  formId.remove();
+  previousCommentContentParagraphElement.style.display = 'block';
+}
+
 function genrateCommentId () { 
   let counter = 0
   for (let i = 0; i < comments.length; i++, counter++) {
@@ -295,20 +370,45 @@ function colseOpenedReplayCommentFormComponent() {
     commentFromElement.remove();
 }
 
-const commentsDiv = document.getElementById('comments');
-console.log(commentsDiv)
-
-for (let i = 0; i < comments.length; i++) {
-  commentsDiv.innerHTML += createCommentComponent(comments[i], currentUser);
-  if (comments[i].replies.length !== 0) {
-    const repliesContainerDiv = createElementWithClass('div', 'replies-container');
-    // document.getElementById(comments[i].user.username)
-    for (let j = 0; j < comments[i].replies.length; j++) {
-      repliesContainerDiv.innerHTML += createCommentComponent(comments[i].replies[j], currentUser);
-    }
-    commentsDiv.lastChild.appendChild(repliesContainerDiv);
-  }
-  
+function backToUneditedCommentState() {
+  const openedEditComments = document.querySelectorAll(`#comments form[id]`);
+  openedEditComments.forEach(openEditForm => {
+    openEditForm.previousElementSibling.style.display = 'block'
+    openEditForm.remove();
+  })
 }
 
-commentsDiv.parentElement.innerHTML += createAddCommentFormComponent(currentUser);
+function extractCommentContentText(commnetContentParagraphElement) {
+  let commentContentText = commnetContentParagraphElement.innerText.trim();
+  let tagUsername = '';
+  // This only if the edit comment is a replay comment check if start with @ then....
+  if (commentContentText.startsWith('@')) {
+    const indexOfEndOfTagUsername = commentContentText.indexOf(' '); 
+    tagUsername = commentContentText.slice(0, indexOfEndOfTagUsername).replace(/\n/, ' ');
+    commentContentText = commentContentText.slice(indexOfEndOfTagUsername).trimStart();
+  }
+
+  return `${tagUsername}${commentContentText}`;
+}
+
+function renderComments() {
+  const commentsDiv = document.getElementById('comments');
+  console.log(commentsDiv)
+
+  for (let i = 0; i < comments.length; i++) {
+    commentsDiv.innerHTML += createCommentComponent(comments[i], currentUser);
+    if (comments[i].replies.length !== 0) {
+      const repliesContainerDiv = createElementWithClass('div', 'replies-container');
+      // document.getElementById(comments[i].user.username)
+      for (let j = 0; j < comments[i].replies.length; j++) {
+        repliesContainerDiv.innerHTML += createCommentComponent(comments[i].replies[j], currentUser);
+      }
+      commentsDiv.lastChild.appendChild(repliesContainerDiv);
+    }
+    
+  }
+
+  commentsDiv.parentElement.innerHTML += createAddCommentFormComponent(currentUser);
+}
+
+renderComments()

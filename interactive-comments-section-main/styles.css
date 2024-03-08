@@ -301,6 +301,29 @@ dialog::backdrop {
   background-color: var(--p-soft-red);
 }
 
+.content-container .comment-form {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0rem;
+  row-gap: 1rem;
+  align-items: center;
+  padding: 0rem;
+}
+
+.content-container .comment-form > textarea {
+  grid-column: 1 / -1;
+  grid-row: 1 / 3;
+}
+
+.content-container .comment-form > button {
+  grid-row: -1;
+  grid-row-start: -1;
+  grid-row-end: auto;
+  grid-column: 6 / -1;
+  padding: 0.875rem 0;
+}
+
 @media screen and (max-width: 645px) {
   /* body {background-color: red;} */
   .comment-container {
@@ -362,6 +385,10 @@ dialog::backdrop {
     grid-row: -1;
     grid-column: 5/-1;
     padding: .875rem 0;
+  }
+
+  .content-container .comment-form > button {
+    padding: 0.875rem 1.25rem;
   }
 }
 

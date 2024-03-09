@@ -266,7 +266,12 @@ window.deleteComment = function (targetCommentId) {
     return comment.id != targetCommentId;
   });
 
+  const detetedCommentDivElement = document.querySelector(`[data-comment-id="${targetCommentId}"]`);
+  const repliesContaienrDivElement = detetedCommentDivElement.parentElement;
   document.querySelector(`[data-comment-id="${targetCommentId}"]`).remove()
+  if (repliesContaienrDivElement.childElementCount === 0 ) {
+    repliesContaienrDivElement.remove();
+  }
   const modalElement = document.getElementById('dialog')
   modalElement.close();
   modalElement.remove();
@@ -310,6 +315,7 @@ window.updateUserComment = function (formId, targetCommentId) {
     let spanTagElement;
     if (isReplayComment) {
       spanTagElement = previousCommentContentParagraphElement.firstElementChild;
+      spanTagElement.append(' ')
       // remove the username tag from the newCommentContent
       newCommentContent = newCommentContent.slice(spanTagElement.innerHTML.length).trimStart();
     }
@@ -374,7 +380,7 @@ function extractCommentContentText(commnetContentParagraphElement) {
     commentContentText = commentContentText.slice(indexOfEndOfTagUsername).trimStart();
   }
 
-  return `${tagUsername}${commentContentText}`;
+  return `${tagUsername} ${commentContentText}`;
 }
 
 window.addEventListener("beforeunload", function(e){

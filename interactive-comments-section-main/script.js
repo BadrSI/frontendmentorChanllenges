@@ -1,7 +1,5 @@
 import data from './data.json' assert {type: 'json'}
 
-console.log('currentUser:',getDataFromLocalStorage('currentUser'), 'comments:', getDataFromLocalStorage('comments'))
-
 const currentUser = getDataFromLocalStorage('currentUser') ?? 
                 setDataInLocalSorage('currentUser', data.currentUser) ?? 
                 data.currentUser; 
@@ -150,21 +148,17 @@ window.replayToComment = function (replayToCommentElement) {
   const textareaId = `_${Math.floor(Math.random() * 10000)}`
   replayToCommentElement.querySelector('.comment-replay-container').innerHTML += createAddCommentFormComponent(currentUser, textareaId, "replay", 'addUserReplayComment')
   const textareaEle = replayToCommentElement.querySelector(`#${textareaId}`);
-  console.log(textareaEle);
   textareaEle.value = `@${replayToCommentElement.getAttribute('id')}, `;
   textareaEle.focus();
 }
 
 window.addUserComment = function (targetTextareaElement) {
   backToUneditedCommentState()
-  console.log(targetTextareaElement);
-  console.log('send:', targetTextareaElement.getAttribute('id'));
   const content = targetTextareaElement.value.trim();
   if(!content) {
     targetTextareaElement.focus();
     return;
   }
-  console.log('send:', targetTextareaElement.value);
   const newUserCommentData = {
     id: genrateCommentId(),
     content,
@@ -173,24 +167,17 @@ window.addUserComment = function (targetTextareaElement) {
     user: currentUser,
     replies: []
   }
-  console.log(newUserCommentData)
   comments.push(newUserCommentData);
-  console.log(comments);
   document.getElementById('comments').innerHTML += createCommentComponent(newUserCommentData, currentUser);
 
   targetTextareaElement.value = '';
 }
 
 window.addUserReplayComment = function (tagetReplayTextareaElement) {
-  console.log(tagetReplayTextareaElement);
   const textareaValue = tagetReplayTextareaElement.value.trim();
   const endOfTagIndex = textareaValue.indexOf(',');
   const replyingToTagUsername = textareaValue.slice(1, endOfTagIndex);
   const content = textareaValue.slice(endOfTagIndex+1).trimStart();
-  console.log("textareaId.value:", tagetReplayTextareaElement.value)
-  console.log("endOfTagIndex:", endOfTagIndex)
-  console.log("replyingToTagUsername:", replyingToTagUsername)
-  console.log("content:", content);
 
   if (!content) {
     tagetReplayTextareaElement.focus();
@@ -203,12 +190,10 @@ window.addUserReplayComment = function (tagetReplayTextareaElement) {
     const isRepliesComment = document.querySelector(`#${replyingToTagUsername}`).parentElement.getAttribute('class') === 'replies-container';
     if (isRepliesComment){ // TODO: we can solve that by using the data attributes. by add data-is-replay-comment
       repliesContainerDiv = document.querySelector(`#${replyingToTagUsername}`).parentElement;
-      console.log('repliesContainerDiv', repliesContainerDiv);
     }
     else {
       repliesContainerDiv = createElementWithClass('div', 'replies-container');
       document.querySelector(`#${replyingToTagUsername}`).appendChild(repliesContainerDiv);
-      console.log('repliesContainerDiv', repliesContainerDiv);
     }
   }
 
@@ -238,9 +223,6 @@ window.addUserReplayComment = function (tagetReplayTextareaElement) {
 
 window.toggleScore = function (id, action) {
   const targetCommentScoreElement = document.querySelector(`div[data-comment-id="${id}"] > .comment-replay-container .counter-container > p`)
-  console.log(targetCommentScoreElement);//.counter-container > p
-  console.log(id);
-  console.log('score: ', +targetCommentScoreElement.innerText );
   let currentScore = +targetCommentScoreElement.innerText;
   const previousUserAction = targetCommentScoreElement.getAttribute('data-aready-scored');
   if (action === '+' && previousUserAction != action) {
@@ -283,7 +265,7 @@ window.deleteComment = function (targetCommentId) {
     comment.replies = comment.replies.filter(replay => replay.id != targetCommentId) 
     return comment.id != targetCommentId;
   });
-  console.log('filteredComments:',comments);
+
   document.querySelector(`[data-comment-id="${targetCommentId}"]`).remove()
   const modalElement = document.getElementById('dialog')
   modalElement.close();
@@ -299,7 +281,6 @@ window.cancelDeletionComment = function () {
 window.editUserComment = function(targetCommentId) {
   backToUneditedCommentState();
   const commentContentContainerDiv = document.querySelector(`[data-comment-id="${targetCommentId}"] .content-container`)
-  console.log(commentContentContainerDiv);
   const commnetContentParagraph = commentContentContainerDiv.lastElementChild;
   
   // return focus to textarea if the edit mode already open.
@@ -353,7 +334,6 @@ window.updateUserComment = function (formId, targetCommentId) {
       previousCommentContentParagraphElement.appendChild(spanTagElement)
     previousCommentContentParagraphElement.append(newCommentContent)
 
-    console.log('comment data is updated', comments);
   }// otherwise the comment does not changed.
   
   formId.remove();
@@ -418,7 +398,6 @@ function setDataInLocalSorage(key, value) {
 
 function renderComments() {
   const commentsDiv = document.getElementById('comments');
-  console.log(commentsDiv);
 
   for (let i = 0; i < comments.length; i++) {
     commentsDiv.innerHTML += createCommentComponent(comments[i], currentUser);

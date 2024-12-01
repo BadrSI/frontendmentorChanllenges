@@ -1,4 +1,4 @@
-import data from './data.json' assert {type: 'json'}
+import data from './data.json' 
 
 const currentUser = getDataFromLocalStorage('currentUser') ?? 
                 setDataInLocalSorage('currentUser', data.currentUser) ?? 
